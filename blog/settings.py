@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'post',
+    'user',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -125,3 +127,15 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+#3rd party apps settings:
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'update' : ['image', 'update', 'table', 'HorizontalRule', 'Smiley', 'SpecialChar']
+    },
+}
+
+CKEDITOR_UPLOAD_PATH = 'ckeditor/'
+
+LOGIN_REDIRECT_URL ='index'

@@ -1,24 +1,40 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse ,HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404 ,redirect
+from django.http import HttpResponse,HttpResponseRedirect
+from django.urls import reverse
 
 from django.template import loader
 from django.utils import timezone
+from django.core.paginator import Paginator
+from django.db.models import Q
+
 from post.models import Post ,Category, Tag
 from post.forms import ContactForm
 from urllib import parse 
 import logging
 
 # Create your views here.
-
+    
 def index(request):
     #articles = Post.objects.all()
     articles = Post.objects.filter(status='published').order_by('-created_date')
-    template = loader.get_template('index.html')
-
     categories = Category.objects.all()
+    
+    #검색
+    query = request.GET.get("q")
+    if query:
+        articles = articles.filter(
+       	Q(title__icontains=query)|Q(content__icontains=query)
+        ).distinct()
 
+    #페이징
+    paginator = Paginator(articles,4)
+    page_number =request.GET.get('page')
+    
+    articles_paginator = paginator.get_page(page_number)
+
+    template = loader.get_template('index.html')
     context = {
-        'articles':articles,
+        'articles':articles_paginator,
         'categories':categories,
     } 
 
@@ -27,6 +43,13 @@ def index(request):
 def category(request, category_url):
     articles = Post.objects.filter(status='published').order_by('-created_date')
     categories = Category.objects.all()
+    
+    #검색
+    query = request.GET.get("q")
+    if query:
+        #return HttpResponseRedirect(reverse('index',query))
+        return index(request)
+        #return render(request,'index.html')
 
     if category_url :
         category = get_object_or_404(Category, slug= category_url)
@@ -44,6 +67,7 @@ def category(request, category_url):
 def tag(request, slug):
     articles = Post.objects.filter(status='published').order_by('-created_date')
     categories = Category.objects.all()
+    
 
     if slug :
         tag = get_object_or_404(Tag, slug= parse.unquote(slug))
@@ -61,6 +85,11 @@ def tag(request, slug):
 
 def postDetail(request,slug):
 
+    #검색
+    query = request.GET.get("q")
+    if query:
+        return index(request)
+
     article = get_object_or_404(Post, slug =parse.unquote(slug))
     template = loader.get_template('post_detail.html')
     categories = Category.objects.all()
@@ -74,22 +103,32 @@ def postDetail(request,slug):
     return HttpResponse(template.render(context,request))
 
 
-def Contact(request):
-    
+def contact(request):
+    #검색
+    query = request.GET.get("q")
+    if query:
+        return index(request)
+
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            message =form.save(commit=False)
-            message.messge_date = timezone.now()
+            message = form.save(commit=False)
+            message.message_date = timezone.now()
             form.save()
-            return HttpResponseRedirect('contactsuccess')
+            return redirect('contactsuccess')
     else:
         form = ContactForm()
     
+    categories = Category.objects.all()
     context = {
         'form':form,
+        'categories':categories,
+
     }
     return render(request,'contact.html',context)
 
-def ContactSuccess(request):
+def contactSuccess(request):
+    query = request.GET.get("q")
+    if query:
+        return index(request)
     return render(request,'contactsuccess.html')

@@ -29,5 +29,23 @@
   </div>
 {% endfor %} 
 </div>
-
 {% endblock content %}
+
+{% block pagination%}
+<ul class="pagination center-align">
+   {% if articles.has_previous %}
+       <li class="waves-effect"><a href="?page={{articles.previous_page_number}}"><i class="material-icons">chevron_left</i></a></li>
+   {% endif %}
+    {% for i in articles.paginator.page_range %}  
+          {% if articles.number == i %}     
+            <li class="active"><a>{{ i }}</a> </li>
+          {% else %}
+            <li class="waves-effect"><a href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+      {% endfor %}
+    {% if articles.has_next %}
+    <li class="waves-effect"><a href="?page={{articles.next_page_number}}"><i class="material-icons">chevron_right</i></a></li>
+     {% endif %}
+  </ul>
+
+{% endblock pagination %}

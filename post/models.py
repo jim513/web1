@@ -3,6 +3,8 @@ from django.urls import reverse
 
 from urllib import parse 
 from django.utils.encoding import iri_to_uri
+
+from ckeditor_uploader.fields import RichTextUploadingField
 # Create your models here.
 STATUS_FIELDS =[
     ('draft','Draft'),
@@ -46,10 +48,11 @@ class Post(models.Model):
     created_date = models.DateTimeField(verbose_name='Created')
     category = models.ForeignKey(Category,on_delete=models.CASCADE,verbose_name='Category')
     picture = models.ImageField(upload_to='uploads/%Y/%m/%d', null =True ,blank=True, verbose_name='Picture')
-    content = models.TextField(verbose_name='Content')
+    content = RichTextUploadingField(verbose_name='Content')
     author = models.CharField(max_length=20,default='홍길동',verbose_name='Created by')
     tags = models.ManyToManyField(Tag)
     slug = models.SlugField(unique=True,allow_unicode=True)
+    likes = models.IntegerField(default=0)
     objects = models.Manager()
     class Meta:
         verbose_name = 'Post'
