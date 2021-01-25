@@ -1,6 +1,6 @@
 from django.urls import path,re_path
 
-from post.views import index ,category ,tag,postDetail,contact,contactSuccess
+from post.views import index ,category ,tag,postDetail,contact,contactSuccess,send_email
 
 from django.urls import register_converter
 
@@ -13,6 +13,7 @@ urlpatterns = [
     path('category/<slug:category_url>',category, name='category'),
     re_path(r'^tags/(?P<slug>[-\w]+)/$',tag, name='tags'),
     re_path(r'^(?P<slug>[-\w]+)/$', postDetail, name='postdetail'),
+    path('send_email',send_email,name='send_email')
 
    
     #path('tags/<slug:tag_url>',tag, name='tags'),

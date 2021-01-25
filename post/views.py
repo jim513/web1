@@ -132,3 +132,13 @@ def contactSuccess(request):
     if query:
         return index(request)
     return render(request,'contactsuccess.html')
+
+
+from django.core.mail.message import EmailMessage
+
+def send_email(request):
+    subject = "message"
+    to = ["jim513@naver.com"]
+    from_email = "eq@gmail.com"
+    message = "메세지 테스트"
+    EmailMessage(subject=subject, body=message, to=to, from_email=from_email).send()

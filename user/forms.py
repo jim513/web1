@@ -47,6 +47,30 @@ class SignupForm(forms.ModelForm):
         confirm_password = self.cleaned_data.get('confirm_password')
 
         if password != confirm_password:
-            self.errors['password'] = self.error_class(['비밀번호가 다릅니다. 다시 입력해주세요'])
+            self._errors['password'] = self.error_class(['비밀번호가 다릅니다. 다시 입력해주세요'])
         
         return self.cleaned_data
+
+
+class ChangePasswordform(forms.ModelForm):
+	id = forms.CharField(widget=forms.HiddenInput())
+	old_password = forms.CharField(widget=forms.PasswordInput(), label="Old password", required=True)
+	new_password = forms.CharField(widget=forms.PasswordInput(), label="New password", required=True)
+	confirm_password = forms.CharField(widget=forms.PasswordInput(), label="Confirm new password", required=True)
+
+	class Meta:
+		model = User
+		fields = ('id', 'old_password', 'new_password', 'confirm_password')
+
+	def clean(self):
+		super(ChangePasswordform, self).clean()
+		id = self.cleaned_data.get('id')
+		old_password = self.cleaned_data.get('old_password')
+		new_password = self.cleaned_data.get('new_password')
+		confirm_password = self.cleaned_data.get('confirm_password')
+		user = User.objects.get(pk=id)
+		if not user.check_password(old_password):
+			self._errors['old_password'] =self.error_class(['Old password do not match.'])
+		if new_password != confirm_password:
+			self._errors['new_password'] =self.error_class(['Passwords do not match.'])
+		return self.cleaned_data

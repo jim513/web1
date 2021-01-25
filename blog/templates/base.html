@@ -24,7 +24,8 @@
     <div class="nav-wrapper container">
       <a id="logo-container" href="{% url 'index'%}" class="brand-logo" >Animal</a></li>
       <ul class="right hide-on-med-and-down">
-        <li class="right hide-on-med-and-down">
+                    <li><a class="dropdown-trigger" data-target="dropdown1">목차<i class="material-icons right">arrow_drop_down</i></a></li>
+
         <li class="z-depth-0" style="border-width:0px">
         <nav class="z-depth-0 light-blue lighten-4 " > 
             <div class="nav-wrapper z-depth-"  style="border-width:0px">
@@ -38,11 +39,10 @@
             </div>
           </nav>
         </li>
-        
-      
-      <li><a class="dropdown-trigger" href="{% if user.is_authenticated %}#!{% else %}{% url 'login' %}{% endif %}" {% if user.is_authenticated %} data-target="dropdown2"{% else %}{% endif %}>{% if user.is_authenticated %}{{ user.username }}<i class="material-icons left">account_box</i>{% else %}Login<i class="material-icons left">login</i>{% endif %}</a>
-      
-        <li><a class="dropdown-trigger" data-target="dropdown1">목차<i class="material-icons right">arrow_drop_down</i></a></li>
+
+        <li>
+        <a class="dropdown-trigger" href="{% if user.is_authenticated %}#!{% else %}{% url 'login' %}{% endif %}" {% if user.is_authenticated %} data-target="dropdown2"{% else %}{% endif %}>{% if user.is_authenticated %}{{ user.username }}<i class="material-icons left">account_box</i>{% else %}Login<i class="material-icons left">login</i>{% endif %}</a>
+        </li>
       </ul>
     </div>
 </nav>
@@ -96,7 +96,7 @@
           <h5 class="white-text">Connect</h5>
           <ul>
             <li><a class="white-text" href="{% url 'signup' %}">회원가입</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="{% url 'password_reset' %}">비밀번호 찾기</a></li>
             <li><a class="white-text" href="#!">Link 3</a></li>
             <li><a class="white-text" href="#!">Link 4</a></li>
           </ul>

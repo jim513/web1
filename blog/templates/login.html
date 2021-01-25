@@ -25,10 +25,12 @@
         </div>
       </div>
       {% endif %}
-      <button type="submit" value="login" class="waves-effect waves-light btn light-blue lighten-4"><i class="material-icons left">send</i>Login</button>
+      <button type="submit" value="login" class="waves-effect waves-light btn light-blue lighten-4 grey-text text-darken-3"><i class="material-icons left">send</i>Login</button>
       <inpuut type="hidden" name="next" value="{{next}}">
-     <button class="waves-effect waves-light btn light-blue lighten-4"><i class="material-icons left">account_circle</i>계정 생성</button>
+      <a href= {% url 'signup' %} class="waves-effect waves-light btn light-blue lighten-4 grey-text text-darken-3"><i class="material-icons left">add</i>회원가입</a>
+
     </form>
+
   </div>
 <br>
 <br>
