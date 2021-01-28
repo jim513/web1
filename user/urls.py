@@ -1,10 +1,10 @@
 from django.urls import path
-from user.views import profile,login,signup ,changepassword,changepasswordsuccess
+from user.views import profile,login,signup ,changepassword,changepasswordsuccess,editprofile
 from django.contrib.auth import views as authViews 
 
 urlpatterns = [
    	
-    path('profile/',profile,name='profile'),
+	path('profile/edit',editprofile,name='edit_profile'),
     path('signup/',signup,name='signup'),
    	path('login/', authViews.LoginView.as_view(template_name='login.html'), name='login'),
    	path('logout/', authViews.LogoutView.as_view(), {'next_page' : 'index'}, name='logout'),

@@ -13,8 +13,8 @@ urlpatterns = [
     path('category/<slug:category_url>',category, name='category'),
     re_path(r'^tags/(?P<slug>[-\w]+)/$',tag, name='tags'),
     re_path(r'^(?P<slug>[-\w]+)/$', postDetail, name='postdetail'),
-    path('send_email',send_email,name='send_email')
-
+    path('send_email',send_email,name='send_email'),
+    
    
     #path('tags/<slug:tag_url>',tag, name='tags'),
     #path('<slug:post_url>',postDetail, name='postdetail'),

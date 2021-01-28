@@ -22,14 +22,14 @@
 <body>
 <nav class="light-blue lighten-4 " role="navigation">{% csrf_token %}
     <div class="nav-wrapper container">
-      <a id="logo-container" href="{% url 'index'%}" class="brand-logo" >Animal</a></li>
+      <a id="logo-container" href="{% url 'index'%}" class="brand-logo" >Animal</a>
       <ul class="right hide-on-med-and-down">
-                    <li><a class="dropdown-trigger" data-target="dropdown1">목차<i class="material-icons right">arrow_drop_down</i></a></li>
+        <li><a id="category-bar" name ="category-bar" class="dropdown-trigger" data-target="dropdown1">목차<i class="material-icons right">arrow_drop_down</i></a></li>
 
         <li class="z-depth-0" style="border-width:0px">
         <nav class="z-depth-0 light-blue lighten-4 " > 
             <div class="nav-wrapper z-depth-"  style="border-width:0px">
-              <form>
+              <form id="nav_seach" name="nav_seach">
                 <div class="input-field z-depth-0" style="border-width:0px">
                   <input id="search" type="search" required name="q" value="{{ request.GET.q }}">
                   <label class="label-icon" for="search"><i class="material-icons grey-text text-darken-3">search</i></label>
@@ -48,16 +48,18 @@
 </nav>
 
 <!-- Dropdown for user -->
-<ul id="dropdown2" class="dropdown-content">
+<ul id="dropdown2" name="dropdown2" class="dropdown-content">
   {% if user.is_authenticated %}
-  <li><a href="{% url 'profile' %}">Profile</a></li>
-  <li><a href="#!">Security</a></li>
+  <li><a href="{% url 'profile' user.username %}">프로필</a></li>
+  <li><a href="{% url 'admin:post_post_add' %}">글쓰기</a></li>
+  <li><a href="{% url 'change_password' %}">비밀번호 변경</a></li>
+
   <li class="divider"></li>
       <li><a href="{% url 'logout' %}">Log out</a>
   {% endif %}
 </ul>
 <!-- Dropdown Structure -->
- <ul id="dropdown1" class="dropdown-content">
+ <ul id="dropdown1" name="dropdown1" class="dropdown-content">
       {% for category in categories%}
         <li><a href="{{category.get_absolute_url}}">{{category.title}}</a></li>
       {% endfor%}

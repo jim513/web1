@@ -12,6 +12,7 @@ from post.forms import ContactForm
 from urllib import parse 
 import logging
 
+from user.models import Profile
 # Create your views here.
     
 def index(request):
@@ -65,6 +66,10 @@ def category(request, category_url):
     return HttpResponse(template.render(context,request))
 
 def tag(request, slug):
+     #검색
+    query = request.GET.get("q")
+    if query:
+        return index(request)
     articles = Post.objects.filter(status='published').order_by('-created_date')
     categories = Category.objects.all()
     
@@ -89,17 +94,45 @@ def postDetail(request,slug):
     query = request.GET.get("q")
     if query:
         return index(request)
-
+    user = request.user.id
     article = get_object_or_404(Post, slug =parse.unquote(slug))
+    
+   
+      
     template = loader.get_template('post_detail.html')
     categories = Category.objects.all()
+    login = False
+    if request.user.is_authenticated:
+        #좋아요 확인
+        try:
+            profile = Profile.objects.get(user_id = user)
+        
+            if profile.favorites.filter(slug=parse.unquote(slug)).exists():
+                favorited =True
+                login =True
+            else:
+                favorited = False
 
-    context = {
-        'article':article,
-        'categories':categories,
-
-    }
-    
+        except:
+            pass
+         #좋아요
+        if request.method == 'POST':
+            if profile.favorites.filter(slug=parse.unquote(slug)).exists():
+                profile.favorites.remove(article)
+            else:
+                profile.favorites.add(article)
+    if login:
+        context = {
+            'article':article,
+            'categories':categories,
+            'favorited' :favorited,
+        }
+    else:
+        context = {
+            'article':article,
+            'categories':categories,
+         }
+   
     return HttpResponse(template.render(context,request))
 
 
@@ -142,3 +175,4 @@ def send_email(request):
     from_email = "eq@gmail.com"
     message = "메세지 테스트"
     EmailMessage(subject=subject, body=message, to=to, from_email=from_email).send()
+

@@ -52,7 +52,6 @@ class Post(models.Model):
     author = models.CharField(max_length=20,default='홍길동',verbose_name='Created by')
     tags = models.ManyToManyField(Tag)
     slug = models.SlugField(unique=True,allow_unicode=True)
-    likes = models.IntegerField(default=0)
     objects = models.Manager()
     class Meta:
         verbose_name = 'Post'

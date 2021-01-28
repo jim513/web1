@@ -17,11 +17,14 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf.urls.static import static
 from django.conf import settings
-
+from user.views import profile
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('manage/', admin.site.urls),
     path('',include('post.urls')),
     path('post/',include('post.urls')),
     path('account/',include('user.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    
+    path('profile/<username>', profile, name='profile'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

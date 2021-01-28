@@ -2,43 +2,38 @@
 
 <div class="col s12">
   <div class="row">
-    <div class="col s12 m12">
+    <div class="col s5 m12">
       <div class="card">
         <div class="card-image">
-          <img src="{% static 'img/profile_banner.jpg' %}" />
+          <img src="{% static 'img/Choosing-Perfect-WordPress-User-Role-Profile-Builder-Banner.png' %}" />
           {% if profile.picture %}
-          <a href="{{ profile.get_absolute_url }}"
-            ><img
+          <a href="{{ profile.get_absolute_url }}"><img
               id="img-circle-custom-profile"
-              src="{{ profile.picture.url }}"
-          /></a>
+              src="{{ profile.picture.url }}"/></a>
           {% else %}
           <img
             id="img-circle-custom-profile"
             src="{% static 'img/person.jpg' %}"
           />
           {% endif %}
-          <h1 style="font-weight: bold" class="card-title">
-            {% if profile.first_name %}{{ profile.first_name }} {{
-            profile.last_name }}{% endif %}
+          <h1 style="font-weight: bold font-color:black" class="card-title">
+          {% if profile.name %}
+             {{profile.name }}
+            {% endif %}
           </h1>
         </div>
 
         <div class="card-action">
           {% if user.is_authenticated and user == profile.user %}
           <a
-            href="{% url 'edit-profile' %}"
+            href="{% url 'edit_profile' %}"
             class="waves-effect waves-light btn right"
-            >프로필 수정</a
-          >
-          {% endif %} {% if profile.location %}
-          <h6 style="font-weight: bold">위치:</h6>
-          <span>{{ profile.location }}</span>
+            >프로필 수정</a>
           {% endif %} {% if profile.url %}
           <h6 style="font-weight: bold">URL:</h6>
           <span>{{ profile.url }}</span>
           {% endif %} {% if profile.profile_info %}
-          <h6 style="font-weight: bold">저보:</h6>
+          <h6 style="font-weight: bold">정보:</h6>
           <span>{{ profile.profile_info }}</span>
           {% endif %}
         </div>
@@ -55,7 +50,7 @@
                     ><img src="{{ article.picture.url }}"
                   /></a>
                   {% else %}
-                  <img src="{% static 'img/default-thumbnail.jpg' %}" />
+                  <img src="{% static 'img/Cute-404-page-not-found-design.jpg' %}" />
                   {% endif %}
                   <a href="{{ article.get_absolute_url }}"
                     ><span class="card-title">{{ article.title }}</span></a
